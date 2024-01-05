@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>{% block title %}Welcome!{% endblock %}</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+
+        <div class="row p-2">
+            <div class="col text-center small">
+                <span class="text-muted">© {{ "now"|date("Y") }} CommPeak. All Rights Reserved.</span>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="/script/jquery-3.7.0.js"></script>
+    <script type="text/javascript" src="/script/bootstrap.bundle.min.js"></script>
+    {% block javascripts %}{% endblock %}
+</html>

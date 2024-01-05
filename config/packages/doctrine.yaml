@@ -1,0 +1,8 @@
+doctrine:
+    dbal:
+        default_connection: 'read'
+        connections:
+            read:
+                url: '%env(resolve:DATABASE_URL_READ)%'
+            write:
+                url: '%env(resolve:DATABASE_URL_WRITE)%'
