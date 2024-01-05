@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Exception\ServiceException;
 use App\Form\CSVFileType;
 use App\Service\CallLogService;
 use App\Service\FileUploaderService;
 use App\Service\StatisticsService;
 use App\Utils\CSVParser;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,12 +27,15 @@ class IndexController extends AbstractController
 
     private StatisticsService $statisticsService;
 
-    public function __construct(Environment $twig, FileUploaderService $fileUploader, CallLogService $callLogService, StatisticsService $statisticsService)
+    private LoggerInterface $logger;
+
+    public function __construct(Environment $twig, FileUploaderService $fileUploader, CallLogService $callLogService, StatisticsService $statisticsService, LoggerInterface $logger)
     {
         $this->twig = $twig;
         $this->fileUploader = $fileUploader;
         $this->callLogService = $callLogService;
         $this->statisticsService = $statisticsService;
+        $this->logger = $logger;
     }
 
 
@@ -75,8 +80,15 @@ class IndexController extends AbstractController
             }
         }
 
-        $pollingInfo = $this->callLogService->getPollingInfo();
-        $statistics = $this->statisticsService->getStatistics();
+        $statistics = [];
+        try {
+            $pollingInfo = $this->callLogService->getPollingInfo();
+            $statistics = $this->statisticsService->getStatistics();
+        } catch (ServiceException $exception) {
+            $this->addFlash('upload_failure', $exception->getMessage());
+        } catch (\Exception $exception) {
+            $this->logger->error("Error occur while fetching Call Statistics.", $exception);
+        }
 
         return $this->renderForm('index.html.twig', [
             'form' => $form,

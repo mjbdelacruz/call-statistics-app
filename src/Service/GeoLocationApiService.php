@@ -33,6 +33,10 @@ class GeoLocationApiService
      */
     public function getContinentsByIpAddresses(array $ipAddresses): array
     {
+        if (empty($this->geoLocationApiKey)) {
+            throw new ServiceException("Please specify GeoLocation API Key in .env file.");
+        }
+
         $continents = [];
         foreach ($ipAddresses AS $ipAddress) {
             $geoResponse = $this->httpClient->request('GET', sprintf('%s?apiKey=%s&ip=%s&fields=continent_code', $this->geoLocationEndpoint, $this->geoLocationApiKey, $ipAddress));

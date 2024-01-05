@@ -1,5 +1,6 @@
-DROP DATABASE `commpeak`;
-CREATE DATABASE IF NOT EXISTS `commpeak`;
+DROP DATABASE IF EXISTS `commpeak`;
+
+CREATE DATABASE `commpeak`;
 
 use `commpeak`;
 
