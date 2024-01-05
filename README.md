@@ -28,6 +28,9 @@ composer install -o
 // For local override change: db_user, db_password also database port connection in case it is not 3306
 DATABASE_URL_READ="mysql://db_user:db_password@127.0.0.1:3306/commpeak?serverVersion=8"
 DATABASE_URL_WRITE="mysql://db_user:db_password@127.0.0.1:3306/commpeak?serverVersion=8"
+
+// Configure GeoLocation API Key
+GEO_LOCATION_API_KEY="{replace_with_api_key}"
 ```
 
 #### Getting Started
